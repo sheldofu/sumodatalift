@@ -41,20 +41,19 @@ for resultsRow in topRow.next_siblings:
         tournament = tournamentCell.find('span')
         if tournament == None:
             continue
-        # rankList.append(tournament.text)
+        # rankLst.append(tournament.text)
         record = tournament.next_sibling.next_sibling
         if isinstance(record, NavigableString):
             continue
         pp.pprint(record.text)
-        recordList.append({'tournament':tournament.text,'record':record.text})
+        recordList.append({'rank':tournament.text,'record':record.text})
 
 pp.pprint(rankList)
 
 
-for y in yearList:
-    for m in monthList:
-        for r in recordList:
-            tournamentRecord.append({'tournament year': y, 'tournament month': m, 'record': r })
+for indexY, y in enumerate(yearList):
+    for indexM, m in enumerate(monthList):
+        tournamentRecord.append({'tournament year': y, 'tournament month': m, 'tournament location': locationList[indexM], 'rank': recordList[indexY + indexM]['rank'], 'record': recordList[indexY + indexM]['record'] })
 
 with open('sumo.json', 'w') as outsumo:
     json.dump(tournamentRecord, outsumo)
