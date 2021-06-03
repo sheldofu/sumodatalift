@@ -45,15 +45,17 @@ for resultsRow in topRow.next_siblings:
         record = tournament.next_sibling.next_sibling
         if isinstance(record, NavigableString):
             continue
-        pp.pprint(record.text)
-        recordList.append({'rank':tournament.text,'record':record.text})
+        winRecord = record.text.split('–')[0]
+        recordList.append({'rank':tournament.text,'record':winRecord})
 
-pp.pprint(rankList)
+pp.pprint(recordList)
 
-
+bashoRecord = {}
 for indexY, y in enumerate(yearList):
+    bashoRecord[y] = []
     for indexM, m in enumerate(monthList):
-        tournamentRecord.append({'tournament year': y, 'tournament month': m, 'tournament location': locationList[indexM], 'rank': recordList[indexY + indexM]['rank'], 'record': recordList[indexY + indexM]['record'] })
+        bashoRecord[y].append({ 'month': m, 'location': locationList[indexM], 'wins': recordList[indexY + indexM]['record'], 'rank': recordList[indexY + indexM]['rank'] })
+pp.pprint(bashoRecord)
 
 with open('sumo.json', 'w') as outsumo:
-    json.dump(tournamentRecord, outsumo)
+    json.dump(bashoRecord, outsumo)
